@@ -1,0 +1,88 @@
+---
+title: "Intro"
+author: "Richard Mondragon Aguilar"
+date: "3/4/2023"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r include=FALSE}
+#Cargar librerías 
+library(readxl)
+library(kableExtra)
+library(dplyr)
+```
+
+```{r include=FALSE}
+#Set directory
+setwd("C:/Users/richa/OneDrive - CIDE/4to semestre/Tesina2")
+getwd()
+```
+
+```{r}
+#Importar datos
+sodem <- read.csv("TSDEM.CSV")
+aparta <- read.csv("TAPART_A.CSV")
+apartb <- read.csv("TAPART_B.CSV")
+modulo <- read.csv("TMODULO.CSV")
+vivienda <- read.csv("TVIVIENDA.CSV")
+```
+
+```{r}
+#Dando formato
+modulo[is.na(modulo)] <- 0
+
+modulo = modulo %>% mutate(P9_10 = as.numeric(modulo$P9_10))
+```
+
+```{r}
+#Obteniendo la información de mujeres trans
+
+modulo_trans_intro <- subset(modulo, P9_10 == 1 & modulo$P7_1 == 1, select = c(FOLIO, VIV_SEL, HOGAR, 
+                                                      N_REN, NIV, P5_3_1, P5_3_4,
+                                                      P9_5_2, P9_5_3, P9_9, 
+                                                      P10_1_3, P10_3, 
+                                                      FACTOR))
+```
+
+```{r}
+#Estimación de mujeres trans a las que alguna vez les hicieron sentirse diferente a la mayoría de las(os) niñas(os) de su edad por su forma de vestirse o arreglarse
+sum(modulo_trans_intro$P5_3_1[modulo_trans_intro$P5_3_1 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P5_3_1 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans a las que alguna vez les hicieron sentirse diferente a la mayoría de las(os) niñas(os) de su edad por sus modos o manera de comportarse
+sum(modulo_trans_intro$P5_3_4[modulo_trans_intro$P5_3_4 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P5_3_4 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans que cuando sus padres se enteraron que se consideran mujeres alguno de ellos le obligó a asistir con un psicólogo, médico, autoridad religiosa u otra persona o institución con  el fin de corregirle
+sum(modulo_trans_intro$P9_5_2[modulo_trans_intro$P9_5_2 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P9_5_2 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans que cuando sus padres se enteraron que se consideran mujeres alguno de ellos se molestó con usted, le agredió u ofendió, le dejó de hablar o corrió de su casa
+sum(modulo_trans_intro$P9_5_3[modulo_trans_intro$P9_5_3 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P9_5_3 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans que han sufrido discriminación o menosprecio por considerarse mujer
+sum(modulo_trans_intro$P9_9[modulo_trans_intro$P9_9 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P9_9 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans que han tenido depresión en el último año
+sum(modulo_trans_intro$P10_1_3[modulo_trans_intro$P10_1_3 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P10_1_3 == 1])
+```
+
+```{r}
+#Estimación de mujeres trans que han intentado suicidarse
+sum(modulo_trans_intro$P10_3[modulo_trans_intro$P10_3 == 1]*modulo_trans_intro$FACTOR[modulo_trans_intro$P10_3 == 1])
+```
+
